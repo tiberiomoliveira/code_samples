@@ -125,6 +125,8 @@ void set_timer(struct timer *t,
  */
 void handle_hw_timer(void)
 {
+    // Need to implement `enter_critical()` function
+    const int token = enter_critical();
     const int64_t now = get_current_time();
     // Search for expired timers and execute their callbacks.
     while (timer_ll && timer_ll->expiration_time <= now)
@@ -135,4 +137,25 @@ void handle_hw_timer(void)
     }
 
     program_next_timer();
+    // Need to implement `exit_critical()` function
+    exit_critical();
 }
+
+/**
+More to the interview:
+
+1. The hardware timer is always armed for the earliest expiration.
+2. Timers are stored in a priority structure ordered by expiration time.
+3. A min-heap improves insertion to:
+    set_timer     O(log n)
+    handle        O(log n) // O(k * log n) in total
+   while a sorted linked list gives:
+    set_timer     O(n)
+    handle        O(1) to find next timer // O(k) in total
+4. In a real embedded system, access to the timer list must be protected by
+disabling interrupts (or another synchronization mechanism) while modifying
+it, because set_timer() and handle_hw_timer() can run concurrently.
+
+This synchronization concern is often what interviewers expect candidates
+to mention after presenting the basic solution.
+*/
