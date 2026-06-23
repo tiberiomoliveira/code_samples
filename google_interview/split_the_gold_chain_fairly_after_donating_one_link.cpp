@@ -1,7 +1,4 @@
 /**
-Solve the following interview question using C or C++, whichever
-is more convenient:
-“””
 You and a friend have received a special gold chain as a gift.
 The chain links each have an integer weight, not necessarily the same.
 You and your friend must choose one of the links to be removed and
@@ -9,7 +6,7 @@ provided to charity, after which the chain will be reconnected.
 After that, you can choose one place along the chain to split it in two,
 such that it creates two equally-weighted sections for you and your friend to take home.
 For a given input chain (list of link weights), determine if a solution is possible.
-“””
+
 In this Google interview problem, each link of the gold chain has an integer weight.
 First, you must remove exactly one link as a donation, reconnect the remaining chain,
 and then cut it once so that the two resulting segments have the same total weight.
@@ -26,11 +23,11 @@ remove-and-cut combination.
 #include <unordered_set>
 
 bool canSplitChain(const std::vector<int>& A) {
-    int n = A.size();
+    const int chain_size = A.size();
     
     // A chain must have at least 3 links to remove 1 
     // and split the remainder into 2 non-empty sections.
-    if (n < 3) return false; 
+    if (chain_size < 3) return false; 
 
     // Use int64_t to prevent potential integer overflow during summation
     int64_t total_sum = 0;
@@ -43,22 +40,22 @@ bool canSplitChain(const std::vector<int>& A) {
     std::unordered_map<int64_t, int> right_suffixes;
 
     // Populate right_suffixes for the initial state (i = 0)
-    // Suffixes available will start from index 1 to n-1
+    // Suffixes available will start from index 1 to chain_size-1
     int64_t current_suffix = 0;
-    for (int j = n - 1; j >= 1; --j) {
-        current_suffix += A[j];
-        right_suffixes[current_suffix]++;
+    for (int i = chain_size - 1; i >= 1; --i) {
+        current_suffix += A[i];
+        ++right_suffixes[current_suffix];
     }
 
     int64_t current_prefix = 0;
 
     // Iterate through the chain, treating each index 'i' as the donated link
-    for (int i = 0; i < n; ++i) {
-        int64_t remaining_sum = total_sum - A[i];
+    for (int i = 0; i < chain_size; ++i) {
+        const int64_t remaining_sum = total_sum - A[i];
         
         // Step 1: Check if the remaining chain can be halved equally
         if (remaining_sum % 2 == 0) {
-            int64_t target = remaining_sum / 2;
+            const int64_t target = remaining_sum / 2;
             
             // Step 2: Check if a valid prefix or suffix matches the target
             if (left_prefixes.count(target) || (right_suffixes[target] > 0)) {
@@ -72,7 +69,7 @@ bool canSplitChain(const std::vector<int>& A) {
         left_prefixes.insert(current_prefix);
 
         // The suffix starting at i + 1 is no longer to the right of our next look
-        if (i + 1 < n) {
+        if (i + 1 < chain_size) {
             int64_t suffix_to_remove = total_sum - current_prefix;
             right_suffixes[suffix_to_remove]--;
             if (right_suffixes[suffix_to_remove] == 0) {
