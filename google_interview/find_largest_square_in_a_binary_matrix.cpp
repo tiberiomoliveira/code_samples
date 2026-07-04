@@ -31,7 +31,7 @@ side length across the matrix, then return its square as the area. It is a commo
 OA/interview question that tests how well you model a 2D DP state.
 */
 
-// Almost same question as the 'find_a_spinter_tag_in_a_bookshelf.cpp'. Difference
+// Almost same question as the 'find_a_spine_tag_in_a_bookshelf.cpp'. Difference
 // is that this one asks for the area.
 
 uint32_t maximal_square(std::vector<std::vector<uint8_t>>& matrix) {
