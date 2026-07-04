@@ -32,6 +32,12 @@ every name whose interval fully covers that range. The example shows how
 overlapping intervals produce merged name lists across consecutive segments.
  */
 
+// Similar question as 'internal_active_users_table.cpp'
+#include <iostream>
+#include <set>
+#include <string>
+#include <vector>
+
 // Input struct
 struct Person {
     std::string name;
