@@ -1,5 +1,7 @@
 /**
-Given pointers to two ImageTransformers, return a pointer to their Least Common Ancestor (LCA). The device in question is very memory constrained so this must be done with O(1) memory and O(logn) time.
+Given pointers to two ImageTransformers, return a pointer to their
+Least Common Ancestor (LCA). The device in question is very memory
+constrained, so this must be done with O(1) memory and O(log n) time.
 // ImageTransformer type definition
 struct ImageTransformer {
     ImageTransformer* parent;
@@ -8,10 +10,11 @@ struct ImageTransformer {
 //Clarifying Questions:
     - Are the two nodes guaranteed to be part of the same tree?
     - Can either of the input pointers be nullptr/NULL?
-    - Is the tree strictly balanced?
+    - Is the tree height-balanced?
  */
 
 #include <iostream>
+#include <vector>
 
 struct ImageTransformer {
     ImageTransformer* parent;
